@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>code-ape</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        #pmain {
+            position: fixed;
+            left: 50px;
+            right: 0;
+            top: 60px;
+            bottom: 0;
+            margin: auto;
+            overflow: auto;
+        }
+
+        #main {
+            position: relative;
+            min-height: 1px;
+            width: 85%;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            box-shadow: 0 3px 10px 0 rgba(115, 143, 147, .3);
+            background: rgb(249, 249, 249);
+            border: 1px solid #eeeeee;
+            border-radius: 2.5px;
+            padding: 1.25rem;
+            overflow: auto;
+            margin: 2% auto 4%;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include ('navbar') %>
+    <div id="pmain">
+        <div id="main">
+            <h3><%= msg %></h3>
+            <% if(typeof topic_info == "undefined") { %>
+            <h5>Please <a href="/admin/add_topic/">GO BACK</a></h5>
+            <% } else { %>
+            <h5>Add questions to <a href="<%= topic_info.url %>"><%= topic_info.title %></a></h5>
+            <% } %>
+        </div>
+    </div>
+</body>
+
+</html>

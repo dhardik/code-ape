@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>code-ape</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        #pmain {
+            position: fixed;
+            left: 50px;
+            right: 0;
+            top: 60px;
+            bottom: 0;
+            margin: auto;
+            overflow: auto;
+        }
+
+        #main {
+            position: relative;
+            min-height: 1px;
+            width: 85%;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            box-shadow: 0 3px 10px 0 rgba(115, 143, 147, .3);
+            background: rgb(249, 249, 249);
+            border: 1px solid #eeeeee;
+            border-radius: 2.5px;
+            padding: 1.25rem;
+            overflow: auto;
+            margin: 2% auto 4%;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include ('navbar') %>
+    <div id="pmain">
+        <div id="main">
+            <h2 align="center">Add new topic</h2>
+            <form id="questionForm" action="/admin/add_topic/" method="POST" enctype="multipart/form-data">
+                <h4>* Required</h4>
+                <div class=" form-group">
+                    <label for="title">Topic title* :</label>
+                    <input class="form-control" placeholder="Enter topic title" name="title" required>
+                    <label for="statement">Topic description* :</label>
+                    <textarea class="form-control" rows="5" placeholder="Enter topic description " name="desc"
+                        required></textarea>
+                    <br>
+                    <label for="logo">Topic logo* :</label>
+                    <input type="file" name="topic_pic" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Add topic</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

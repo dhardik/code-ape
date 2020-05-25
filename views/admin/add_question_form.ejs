@@ -1,0 +1,134 @@
+<html>
+
+<head>
+    <title>code-ape</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <%- include ('navbar') %>
+    <div class="container">
+        <form id="questionForm">
+            <h1>Add Question to <%= topic_info.title %></h1>
+            <h4>* Required</h4>
+            <div class=" form-group">
+                <label for="name">Question name* :</label>
+                <input class="form-control" placeholder="Enter question name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="statement">Problem statement* :</label>
+                <textarea class="form-control" rows="5" placeholder="Enter problem statement" name="statement"
+                    required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="name">Sample Testcase* :</label>
+                <input class="form-control" id="sampleInput" placeholder="Enter sample input" name="sampleInput"
+                    required>
+                <input class="form-control" id="sampleOutput" placeholder="Enter sample output" name="sampleOutput"
+                    required>
+            </div>
+            <div class="form-group">
+                <label for="name">Hidden Testcase* :</label>
+                <input class="form-control" placeholder="Enter hidden input" name="hiddenInput" required>
+                <input class="form-control" placeholder="Enter hidden output" name="hiddenOutput" required>
+            </div>
+            <div class="form-group" id="hiddenTestcaseDiv"></div>
+            <div class="form-group">
+                <button type="button" class="btn btn-success" onclick="addMoreHiddenTestcase()">Add more hidden
+                    testcases</button>
+            </div>
+            <div class="form-group">
+                <label for="statement">Select difficulty* :</label>
+                <select class="form-control" required id="difficultySelector">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Add question</button>
+        </form>
+    </div>
+</body>
+<script>
+    function addMoreHiddenTestcase() {
+        var mainDiv = document.getElementById("hiddenTestcaseDiv");
+        var mainDivLength = mainDiv.childNodes.length + 2;
+        if (mainDivLength <= 10) {
+            var extraDiv = document.createElement("div");
+            extraDiv.setAttribute("class", "form-group");
+            var hiddenInput = document.createElement("input");
+            hiddenInput.classList.add("form-control");
+            hiddenInput.required = true;
+            hiddenInput.placeholder = "Enter hidden input";
+            extraDiv.appendChild(hiddenInput);
+            var hiddenOutput = document.createElement("input");
+            hiddenOutput.classList.add("form-control");
+            hiddenOutput.required = true;
+            hiddenOutput.placeholder = "Enter hidden output";
+            extraDiv.appendChild(hiddenOutput);
+            var deleteMeBtn = document.createElement("button");
+            deleteMeBtn.innerHTML = "X";
+            deleteMeBtn.setAttribute("type", "button");
+            deleteMeBtn.setAttribute("class", "btn btn-danger btn-sm");
+            deleteMeBtn.setAttribute("onclick", "deleteMe(event)");
+            extraDiv.appendChild(deleteMeBtn);
+            mainDiv.appendChild(extraDiv);
+        }
+        else {
+            alert("Test-cases should not be more then 10");
+        }
+    }
+
+    function deleteMe(event) {
+        event.target.parentNode.remove();
+    }
+
+    document.getElementById("questionForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+        var data = document.getElementsByClassName("form-control");
+        var formData = {
+            title: data[0].value,
+            statement: data[1].value,
+            sampleTestCase: {
+                input: data[2].value,
+                output: data[3].value
+            },
+            testCase: [],
+            difficulty: data[data.length - 1].value
+        };
+        for (var i = 4; i < data.length - 1;) {
+            var tempObj = {
+                input: data[i].value,
+                output: data[i + 1].value
+            };
+            i += 2;
+            formData.testCase.push(tempObj);
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/admin/add_question/<%= topic_info._id %>");
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.onload = function () {
+            alert(xhr.responseText);
+            window.location.reload();
+        };
+        xhr.send(JSON.stringify(formData));
+    });
+</script>
+
+</html>
